@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="am">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ቡና ኤርድሮፕ</title>
+    <style>
+        :root {
+            --primary: #10b981;
+            --primary-dark: #059669;
+            --bg-dark: #0f172a;
+            --card-bg: rgba(255,255,255,.08);
+            --card-border: rgba(255,255,255,.15);
+            --text-muted: #94a3b8;
+            --warning: #f59e0b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            background: linear-gradient(160deg,#064e3b,#022c22 40%,var(--bg-dark));
+        }
+
+        .app-shell {
+            width: 100%;
+            max-width: 420px;
+            height: 100vh;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background: rgba(15,23,42,.88);
+            backdrop-filter: blur(20px);
+        }
+
+        @media (min-width:440px) {
+            .app-shell {
+                height: 92vh;
+                border: 1px solid var(--card-border);
+                border-radius: 28px;
+            }
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--card-border);
+            background: rgba(6,78,59,.3);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        .brand img {
+            width: 36px;
+            height: 36px;
+            border: 2px solid var(--primary);
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .user-tag {
+            padding: 5px 12px;
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            color: #d1fae5;
+            background: rgba(255,255,255,.1);
+            font-size: 12px;
+        }
+
+        .content-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            padding-bottom: 90px;
+        }
+
+        .view-page {
+            display: none;
+            animation: fadeIn .3s ease;
+        }
+
+        .view-page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .balance-card,
+        .stat-card,
+        .comment-card,
+        .list-card,
+        .withdrawal-card {
+            border: 1px solid var(--card-border);
+            background: var(--card-bg);
+        }
+
+        .balance-card {
+            margin-bottom: 20px;
+            padding: 24px 20px;
+            border-color: rgba(16,185,129,.4);
+            border-radius: 20px;
+            text-align: center;
+            background: linear-gradient(135deg,rgba(16,185,129,.25),rgba(5,150,105,.1));
+        }
+
+        .balance-title {
+            color: #e2e8f0;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .balance-amount {
+            margin: 10px 0;
+            font-size: 42px;
+            font-weight: 800;
+        }
+
+        .balance-unit,
+        .section-title,
+        .list-info p,
+        .withdrawal-amount {
+            color: var(--primary);
+        }
+
+        .balance-unit {
+            font-size: 18px;
+        }
+
+        .section-title {
+            margin: 20px 0 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--card-border);
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .ads-grid {
+            display: grid;
+            grid-template-columns: repeat(2,minmax(0,1fr));
+            gap: 10px;
+        }
+
+        .list-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 10px;
+            padding: 14px;
+            border-radius: 16px;
+        }
+
+        .ads-grid .list-card {
+            min-height: 145px;
+            flex-direction: column;
+            align-items: stretch;
+            justify-content: space-between;
+            margin: 0;
+            padding: 12px;
+        }
+
+        .ads-grid .btn {
+            width: 100%;
+            padding: 9px 8px;
+        }
+
+        .list-info {
+            min-width: 0;
+        }
+
+        .list-info h4 {
+            margin-bottom: 4px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .list-info p {
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .btn,
+        .btn-full {
+            border: 0;
+            border-radius: 10px;
+            color: #022c22;
+            background: var(--primary);
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            font-size: 13px;
+        }
+
+        .btn:disabled,
+        .btn.locked {
+            color: #94a3b8;
+            background: #334155;
+            cursor: not-allowed;
+        }
+
+        .btn-full {
+            width: 100%;
+            margin-top: 15px;
+            padding: 15px;
+            color: white;
+            background: linear-gradient(135deg,var(--primary),var(--primary-dark));
+            font-size: 16px;
+        }
+
+        .bottom-nav {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 70px;
+            display: grid;
+            grid-template-columns: repeat(4,1fr);
+            border-top: 1px solid var(--card-border);
+            background: rgba(15,23,42,.97);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            color: var(--text-muted);
+            cursor: pointer;
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+        }
+
+        .nav-item svg {
+            width: 22px;
+            height: 22px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+        }
+
+        .nav-item span {
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        .custom-input,
+        .custom-select {
+            width: 100%;
+            margin-bottom: 15px;
+            padding: 14px;
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            outline: none;
+            color: white;
+            background: rgba(255,255,255,.05);
+        }
+
+        .custom-select option {
+            color: white;
+            background: var(--bg-dark);
+        }
+
+        .alert-success {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            border: 1px solid var(--primary);
+            border-radius: 12px;
+            color: #d1fae5;
+            background: rgba(16,185,129,.2);
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .withdrawal-demo {
+            margin-top: 24px;
+        }
+
+        .demo-heading,
+        .withdrawal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .demo-heading h3,
+        .withdrawal-header h3 {
+            color: var(--primary);
+            font-size: 16px;
+        }
+
+        .live-badge {
+            padding: 4px 8px;
+            border: 1px solid rgba(239,68,68,.6);
+            border-radius: 20px;
+            color: #fca5a5;
+            background: rgba(239,68,68,.18);
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .demo-description,
+        .muted-text {
+            margin-bottom: 12px;
+            color: var(--text-muted);
+            font-size: 12px;
+        }
+
+        .withdrawal-card {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+            padding: 11px 12px;
+            border-radius: 14px;
+        }
+
+        .withdrawal-avatar {
+            display: flex;
+            flex: 0 0 34px;
+            align-items: center;
+            justify-content: center;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            color: var(--primary);
+            background: rgba(16,185,129,.2);
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .withdrawal-details {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .withdrawal-name {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .withdrawal-method,
+        .withdrawal-time {
+            margin-top: 3px;
+            color: var(--text-muted);
+            font-size: 11px;
+        }
+
+        .withdrawal-amount {
+            white-space: nowrap;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .withdrawal-stats {
+            display: grid;
+            grid-template-columns: repeat(3,1fr);
+            gap: 8px;
+            margin: 15px 0;
+        }
+
+        .stat-card {
+            padding: 12px 6px;
+            border-radius: 14px;
+            text-align: center;
+        }
+
+        .stat-card strong {
+            display: block;
+            color: var(--primary);
+            font-size: 16px;
+        }
+
+        .stat-card span {
+            display: block;
+            margin-top: 4px;
+            color: var(--text-muted);
+            font-size: 10px;
+        }
+
+        .comments-title {
+            margin: 22px 0 10px;
+            color: var(--primary);
+            font-size: 15px;
+        }
+
+        .comment-card {
+            margin-bottom: 8px;
+            padding: 11px;
+            border-radius: 13px;
+        }
+
+        .comment-card strong {
+            font-size: 12px;
+        }
+
+        .comment-card p {
+            margin-top: 5px;
+            color: #cbd5e1;
+            font-size: 12px;
+        }
+
+        .modal-overlay,
+        #loader {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay {
+            flex-direction: column;
+            color: white;
+            background: rgba(0,0,0,.9);
+            text-align: center;
+        }
+
+        .timer-circle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 120px;
+            height: 120px;
+            margin-bottom: 20px;
+            border: 5px solid var(--card-border);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            color: var(--primary);
+            font-size: 40px;
+            font-weight: bold;
+        }
+
+        #loader {
+            z-index: 200;
+            background: rgba(15,23,42,.8);
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(16,185,129,.3);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin .8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width:320px) {
+            .ads-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-shell">
+        <div class="header">
+            <div class="brand">
+                <img src="YOUR_LOGO_URL_HERE" alt="Logo"
+                     onerror="this.src='https://cdn-icons-png.flaticon.com/512/2885/2885560.png'">
+                <span>ቡና Airdrop</span>
+            </div>
+            <div class="user-tag" id="userIdDisplay">@user</div>
+        </div>
+
+        <div class="content-area">
+            <div id="page-home" class="view-page active">
+                <div class="balance-card">
+                    <div class="balance-title">አጠቃላይ ቀሪ ሂሳብ</div>
+                    <div class="balance-amount">
+                        <span id="homeBalance">0</span>
+                        <span class="balance-unit">ETB</span>
+                    </div>
+                    <p style="font-size:12px;color:var(--text-muted);margin-top:10px;">
+                        ያጋበዙት ሰው ብዛት:
+                        <span id="homeRefs" style="color:white;font-weight:bold;">0</span>
+                    </p>
+                </div>
+
+                <p style="text-align:center;color:var(--text-muted);font-size:14px;">
+                    እንኳን በደህና መጡ! ስራዎችን በመስራት እና ሰዎችን በመጋበዝ ገንዘብ ያግኙ።
+                </p>
+
+                <div class="withdrawal-demo">
+                    <div class="demo-heading">
+                        <h3>የቅርብ ጊዜ ክፍያዎች</h3>
+                        <span class="live-badge">● LIVE DEMO</span>
+                    </div>
+                    <p class="demo-description">ከ50 የማሳያ ስሞች 5 ስሞች በየ1 ደቂቃው ይቀያየራሉ።</p>
+                    <div id="withdrawal-demo-list"></div>
+                </div>
+            </div>
+
+            <div id="page-earn" class="view-page">
+                <div class="section-title">ማስታወቂያ እይታ (15 ETB)</div>
+                <p class="muted-text">በአንድ ጊዜ 4 ማስታወቂያዎች ብቻ ይታያሉ። አራቱ ሲጠናቀቁ ቀጣዮቹ 4 ይከፈታሉ።</p>
+                <div id="ads-container" class="ads-grid"></div>
+
+                <div class="section-title" style="margin-top:30px;">ቋሚ ስራዎች (30 ETB)</div>
+                <div id="tasks-container"></div>
+            </div>
+
+            <div id="page-referral" class="view-page">
+                <div class="balance-card">
+                    <div class="balance-title">የጋበዙት ሰው ብዛት</div>
+                    <div class="balance-amount" id="refCount">0</div>
+                    <p style="font-size:13px;color:#d1fae5;margin-top:10px;">ለ1 ሰው <strong>100 ETB</strong> ያገኛሉ!</p>
+                </div>
+
+                <div class="input-group">
+                    <label>የእርስዎ መጋበዣ ሊንክ</label>
+                    <input type="text" class="custom-input" id="refLink" readonly>
+                </div>
+                <button class="btn-full" onclick="copyReferral()">ሊንኩን ኮፒ አድርግ</button>
+            </div>
+
+            <div id="page-withdraw" class="view-page">
+                <div class="withdrawal-header">
+                    <h3>ገንዘብ ማውጣት</h3>
+                    <span class="live-badge">SECURE</span>
+                </div>
+
+                <div class="balance-card" style="padding:18px;">
+                    <div class="balance-title">የማውጣት ሁኔታ</div>
+                    <p style="font-size:14px;margin-top:10px;">✅ ዝቅተኛ ሂሳብ: <strong>1,000 ETB</strong></p>
+                    <p style="font-size:14px;margin-top:5px;">✅ የሚያስፈልግ ሪፈራል: <strong>15 ሰው</strong></p>
+                </div>
+
+                <div class="withdrawal-stats">
+                    <div class="stat-card">
+                        <strong id="withdrawStatTotal">1,284</strong>
+                        <span>ዛሬ የተከፈለ</span>
+                    </div>
+                    <div class="stat-card">
+                        <strong id="withdrawStatUsers">356</strong>
+                        <span>ተጠቃሚዎች</span>
+                    </div>
+                    <div class="stat-card">
+                        <strong id="withdrawStatRate">98%</strong>
+                        <span>የተሳካ</span>
+                    </div>
+                </div>
+
+                <p id="withdrawUpdated" class="muted-text">የመጨረሻ ማዘመኛ: አሁን</p>
+
+                <div class="input-group">
+                    <label>የክፍያ መንገድ</label>
+                    <select class="custom-select" id="payMethod">
+                        <option value="Telebirr">ቴሌብር (Telebirr)</option>
+                        <option value="CBE Birr">ሲቢኢ ብር (CBE Birr)</option>
+                        <option value="Awash Bank">አዋሽ ባንክ (Awash Bank)</option>
+                        <option value="Commercial Bank of Ethiopia">ንግድ ባንክ (CBE Bank)</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>ስልክ ቁጥር / የሂሳብ ቁጥር</label>
+                    <input type="text" class="custom-input" id="payAccount" placeholder="09... ወይም የባንክ ቁጥር">
+                </div>
+
+                <button class="btn-full" onclick="requestWithdrawal()">ገንዘብ አውጣ</button>
+                <div id="withdraw-alert" class="alert-success">በሂደት ላይ ነው (Pending)... እባክዎ ይጠብቁ።</div>
+
+                <h3 class="comments-title">የተጠቃሚዎች አስተያየት</h3>
+                <div id="withdraw-comments"></div>
+            </div>
+        </div>
+
+        <div class="bottom-nav">
+            <div class="nav-item active" onclick="switchTab('home',this)">
+                <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+                <span>መነሻ</span>
+            </div>
+            <div class="nav-item" onclick="switchTab('earn',this)">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+                <span>ስራዎች</span>
+            </div>
+            <div class="nav-item" onclick="switchTab('referral',this)">
+                <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/></svg>
+                <span>ጋብዝ</span>
+            </div>
+            <div class="nav-item" onclick="switchTab('withdraw',this)">
+                <svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                <span>አውጣ</span>
+            </div>
+        </div>
+
+        <div class="modal-overlay" id="adModal">
+            <h2 style="margin-bottom:20px;">እባክዎ ይጠብቁ...</h2>
+            <div class="timer-circle" id="timerText">15</div>
+            <p style="color:var(--text-muted);">ማስታወቂያ በመታየት ላይ ነው</p>
+        </div>
+
+        <div id="loader"><div class="spinner"></div></div>
+    </div>
+
+    <script>
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyGt4mVDt9b62uyE8x5mqZjlLYS2U3avQtxWQYB02qnezx8UpSG5Ky8i2SoAO1u7e1L/exec";
+
+        let userId = "user_" + Math.floor(Math.random() * 10000);
+        let startParam = "";
+
+        if (window.Telegram && window.Telegram.WebApp) {
+            window.Telegram.WebApp.expand();
+            const telegramUser = window.Telegram.WebApp.initDataUnsafe.user;
+
+            if (telegramUser) {
+                userId = telegramUser.id.toString();
+                document.getElementById("userIdDisplay").innerText =
+                    "@" + (telegramUser.username || userId);
+            }
+
+            startParam = window.Telegram.WebApp.initDataUnsafe.start_param || "";
+        }
+
+        let state = {
+            balance: 0,
+            referrals: 0,
+            adProgress: 0,
+            completedTasks: ""
+        };
+
+        const taskList = [
+            {id:"tg1",name:"ቴሌግራም ቻናል 1 ተቀላቀል"},
+            {id:"tg2",name:"ቴሌግራም ቻናል 2 ተቀላቀል"},
+            {id:"tg3",name:"ቴሌግራም ግሩፕ ተቀላቀል"},
+            {id:"tg4",name:"ስፖንሰር ቻናል ተቀላቀል"},
+            {id:"tg5",name:"የዜና ቻናል ተቀላቀል"},
+            {id:"yt1",name:"ዩትዩብ ሰብስክራይብ አድርግ"},
+            {id:"yt2",name:"ዩትዩብ ቪዲዮ እይ"}
+        ];
+
+        const demoNames = [
+            "Abebe Kebede","Mekdes Alemu","Dawit Tesfaye","Hana Girma","Biniam Worku",
+            "Liya Tadesse","Samuel Bekele","Mimi Haile","Yonas Getachew","Selamawit Assefa",
+            "Nahom Solomon","Bethelhem Kassa","Henok Mulugeta","Rahel Yohannes","Ephrem Desta",
+            "Meron Fikadu","Kaleb Tsegaye","Saron Abebe","Daniel Abebe","Ruth Berhanu",
+            "Eyob Mekonnen","Tigist Girma","Fitsum Alemu","Marta Tesfaye","Yonatan Kebede",
+            "Mahlet Worku","Natnael Haile","Betty Kifle","Biruk Asrat","Selam Tesfaye",
+            "Mihret Dawit","Robel Tadesse","Sofia Gebre","Abel Mamo","Eden Solomon",
+            "Michael Getu","Tsion Fekadu","Yared Kassahun","Liya Mekonnen","Nati Berhanu",
+            "Amanuel Girma","Hirut Desta","Kidist Taye","Solomon Kassa","Mekonnen Assefa",
+            "Almaz Bekele","Tewodros Worku","Sara Yohannes","Girma Mulugeta","Frehiwot Tesfaye"
+        ];
+
+        const paymentMethods = ["Telebirr","CBE Birr","Awash Bank","Commercial Bank of Ethiopia"];
+        const timeLabels = ["5 ደቂቃ በፊት","12 ደቂቃ በፊት","1 ሰዓት በፊት","3 ሰዓት በፊት","4 ሰዓት በፊት"];
+        const comments = [
+            ["ሚሚ ሀይሌ","ክፍያዬን በፍጥነት ተቀብያለሁ። አመሰግናለሁ!"],
+            ["ዮናስ ጌታቸው","Telebirr ላይ በሰላም ደርሶኛል።"],
+            ["ሊያ ታደሰ","የማውጣት ሂደቱ ቀላል እና ግልጽ ነው።"],
+            ["ሳሙኤል በቀለ","CBE Birr ክፍያዬ ተሳክቷል።"]
+        ];
+
+        let withdrawalPage = 0;
+        let commentPage = 0;
+
+        function renderWithdrawalDemo() {
+            const start = withdrawalPage * 5;
+            document.getElementById("withdrawal-demo-list").innerHTML =
+                demoNames.slice(start,start + 5).map((name,index) => {
+                    const n = start + index;
+                    return `
+                        <div class="withdrawal-card">
+                            <div class="withdrawal-avatar">${name[0]}</div>
+                            <div class="withdrawal-details">
+                                <div class="withdrawal-name">${name}</div>
+                                <div class="withdrawal-method">${paymentMethods[n % 4]}</div>
+                                <div class="withdrawal-time">${timeLabels[n % 5]}</div>
+                            </div>
+                            <div class="withdrawal-amount">+${[1000,1200,1500,2000][n % 4]} ETB</div>
+                        </div>`;
+                }).join("");
+
+            withdrawalPage = (withdrawalPage + 1) % 10;
+        }
+
+        function renderCommentsAndStats() {
+            const offset = commentPage % comments.length;
+            const currentComments = [...comments.slice(offset),...comments.slice(0,offset)].slice(0,3);
+
+            document.getElementById("withdraw-comments").innerHTML = currentComments.map(item => `
+                <div class="comment-card">
+                    <strong>✅ ${item[0]}</strong>
+                    <p>${item[1]}</p>
+                </div>
+            `).join("");
+
+            const total = 1284 + commentPage * 7;
+            const users = 356 + commentPage * 2;
+            document.getElementById("withdrawStatTotal").innerText = total.toLocaleString();
+            document.getElementById("withdrawStatUsers").innerText = users.toLocaleString();
+            document.getElementById("withdrawStatRate").innerText = (98 + (commentPage % 2)) + "%";
+            document.getElementById("withdrawUpdated").innerText =
+                "የመጨረሻ ማዘመኛ: አሁን";
+
+            commentPage++;
+        }
+
+        window.onload = () => {
+            document.getElementById("refLink").value =
+                `https://t.me/YourBotUsername?startapp=${userId}`;
+
+            renderWithdrawalDemo();
+            renderCommentsAndStats();
+            renderAdsAndTasks();
+
+            setInterval(renderWithdrawalDemo,60000);
+            setInterval(renderCommentsAndStats,180000);
+            fetchData();
+        };
+
+        function switchTab(pageId,navEl) {
+            document.querySelectorAll(".view-page").forEach(page => page.classList.remove("active"));
+            document.querySelectorAll(".nav-item").forEach(item => item.classList.remove("active"));
+            document.getElementById("page-" + pageId).classList.add("active");
+            navEl.classList.add("active");
+            renderAdsAndTasks();
+        }
+
+        function updateUI() {
+            document.getElementById("homeBalance").innerText =
+                Number(state.balance || 0).toLocaleString();
+            document.getElementById("homeRefs").innerText = state.referrals || 0;
+            document.getElementById("refCount").innerText = state.referrals || 0;
+            renderAdsAndTasks();
+        }
+
+        async function fetchData() {
+            if (!SCRIPT_URL.startsWith("http")) return;
+            showLoader(true);
+
+            try {
+                const response = await fetch(
+                    `${SCRIPT_URL}?action=getUser&userId=${userId}&refBy=${startParam}`
+                );
+                state = await response.json();
+                updateUI();
+            } catch (error) {
+                alert("ከኢንተርኔት ጋር መገናኘት አልተቻለም።");
+            }
+
+            showLoader(false);
+        }
+
+        function renderAdsAndTasks() {
+            const progress = Number(state.adProgress || 0);
+            const firstAd = Math.floor(progress / 4) * 4 + 1;
+            const adContainer = document.getElementById("ads-container");
+
+            adContainer.innerHTML = Array.from({length:4},(_,index) => {
+                const adNumber = firstAd + index;
+                const unlocked = adNumber === progress + 1;
+
+                return `
+                    <div class="list-card">
+                        <div class="list-info">
+                            <h4>ማስታወቂያ ${adNumber}</h4>
+                            <p>+15 ETB</p>
+                        </div>
+                        ${unlocked
+                            ? '<button class="btn" onclick="startAd()">እይ</button>'
+                            : '<button class="btn locked" disabled>🔒 ተቆልፏል</button>'}
+                    </div>`;
+            }).join("");
+
+            const completed = String(state.completedTasks || "");
+            document.getElementById("tasks-container").innerHTML = taskList.map(task => `
+                <div class="list-card">
+                    <div class="list-info">
+                        <h4>${task.name}</h4>
+                        <p>+30 ETB</p>
+                    </div>
+                    ${completed.includes(task.id)
+                        ? '<button class="btn locked" disabled>✅ ተሰርቷል</button>'
+                        : `<button class="btn" onclick="doTask('${task.id}')">ስራ</button>`}
+                </div>
+            `).join("");
+        }
+
+        let timerInterval;
+
+        function startAd() {
+            const modal = document.getElementById("adModal");
+            const timerText = document.getElementById("timerText");
+            modal.style.display = "flex";
+
+            let timeLeft = 15;
+            timerText.innerText = timeLeft;
+            clearInterval(timerInterval);
+
+            timerInterval = setInterval(() => {
+                timerText.innerText = --timeLeft;
+
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    modal.style.display = "none";
+                    claimAdReward();
+                }
+            },1000);
+        }
+
+        async function claimAdReward() {
+            if (!SCRIPT_URL.startsWith("http")) return;
+            showLoader(true);
+
+            try {
+                const data = await (await fetch(
+                    `${SCRIPT_URL}?action=watchAd&userId=${userId}`
+                )).json();
+
+                if (data.success) {
+                    state.balance = data.balance;
+                    state.adProgress = data.adProgress;
+                    updateUI();
+                    alert(data.message);
+                }
+            } catch (error) {
+                alert("ስህተት ተፈጥሯል።");
+            }
+
+            showLoader(false);
+        }
+
+        async function doTask(taskId) {
+            window.open("https://t.me/YourBotUsername","_blank");
+            if (!SCRIPT_URL.startsWith("http")) return;
+            showLoader(true);
+
+            try {
+                const data = await (await fetch(
+                    `${SCRIPT_URL}?action=completeTask&userId=${userId}&taskId=${taskId}`
+                )).json();
+
+                if (data.success) {
+                    state.balance = data.balance;
+                    state.completedTasks = data.completedTasks;
+                    updateUI();
+                    alert(data.message);
+                } else {
+                    alert(data.message);
+                }
+            } catch (error) {
+                alert("ስህተት ተፈጥሯል።");
+            }
+
+            showLoader(false);
+        }
+
+        async function requestWithdrawal() {
+            const method = document.getElementById("payMethod").value;
+            const account = document.getElementById("payAccount").value.trim();
+
+            if (!account) {
+                alert("እባክዎ ስልክ ቁጥር ወይም የሂሳብ ቁጥር ያስገቡ!");
+                return;
+            }
+
+            if (!SCRIPT_URL.startsWith("http")) return;
+            showLoader(true);
+
+            try {
+                const data = await (await fetch(
+                    `${SCRIPT_URL}?action=withdraw&userId=${userId}` +
+                    `&method=${encodeURIComponent(method)}` +
+                    `&account=${encodeURIComponent(account)}`
+                )).json();
+
+                if (data.success) {
+                    state.balance = data.balance;
+                    updateUI();
+                    document.getElementById("withdraw-alert").style.display = "block";
+                    alert(data.message);
+                } else {
+                    alert(data.message);
+                }
+            } catch (error) {
+                alert("ስህተት ተፈጥሯል።");
+            }
+
+            showLoader(false);
+        }
+
+        function copyReferral() {
+            const input = document.getElementById("refLink");
+            input.select();
+            document.execCommand("copy");
+            alert("የመጋበዣ ሊንክ ኮፒ ተደርጓል!");
+        }
+
+        function showLoader(show) {
+            document.getElementById("loader").style.display = show ? "flex" : "none";
+        }
+    </script>
+</body>
+</html>
