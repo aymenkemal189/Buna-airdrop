@@ -1,18 +1,24 @@
 <!DOCTYPE html>
 <html lang="am">
 <head>
-    <meta charset="UTF-8">
+    <script src='//libtl.com/sdk.js' data-zone='11532819' data-sdk='show_11532819'></script>
+<meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ቡና ኤርድሮፕ</title>
     <style>
         :root {
-            --primary: #10b981;
-            --primary-dark: #059669;
-            --bg-dark: #0f172a;
-            --card-bg: rgba(255,255,255,.08);
-            --card-border: rgba(255,255,255,.15);
-            --text-muted: #94a3b8;
-            --warning: #f59e0b;
+            --espresso: #2a1810;
+            --espresso-deep: #1a0f0a;
+            --crema: #e8b563;
+            --crema-bright: #f4c97a;
+            --caramel: #c17a3f;
+            --card-bg: rgba(255,247,237,.06);
+            --card-border: rgba(232,181,99,.18);
+            --text-muted: #b8a596;
+            --warning: #f4c97a;
+            --primary: var(--crema);
+            --primary-dark: var(--caramel);
+            --bg-dark: var(--espresso-deep);
         }
 
         * {
@@ -28,8 +34,11 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            color: white;
-            background: linear-gradient(160deg,#064e3b,#022c22 40%,var(--bg-dark));
+            color: #fdf6ee;
+            background:
+                radial-gradient(circle at 15% 0%, rgba(232,181,99,.14), transparent 45%),
+                radial-gradient(circle at 100% 100%, rgba(193,122,63,.16), transparent 50%),
+                linear-gradient(160deg, var(--espresso) 0%, var(--espresso-deep) 55%, #120a06 100%);
         }
 
         .app-shell {
@@ -40,8 +49,8 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            background: rgba(15,23,42,.88);
-            backdrop-filter: blur(20px);
+            background: rgba(26,15,10,.82);
+            backdrop-filter: blur(24px);
         }
 
         @media (min-width:440px) {
@@ -49,6 +58,7 @@
                 height: 92vh;
                 border: 1px solid var(--card-border);
                 border-radius: 28px;
+                box-shadow: 0 30px 80px -20px rgba(0,0,0,.7);
             }
         }
 
@@ -56,9 +66,9 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 15px 20px;
+            padding: 16px 20px;
             border-bottom: 1px solid var(--card-border);
-            background: rgba(6,78,59,.3);
+            background: linear-gradient(180deg, rgba(42,24,16,.55), rgba(42,24,16,.15));
         }
 
         .brand {
@@ -67,23 +77,26 @@
             gap: 10px;
             font-size: 18px;
             font-weight: 800;
+            letter-spacing: -.2px;
         }
 
         .brand img {
             width: 36px;
             height: 36px;
-            border: 2px solid var(--primary);
+            border: 2px solid var(--crema);
             border-radius: 50%;
             object-fit: cover;
+            box-shadow: 0 0 0 3px rgba(232,181,99,.15);
         }
 
         .user-tag {
-            padding: 5px 12px;
+            padding: 6px 13px;
             border: 1px solid var(--card-border);
             border-radius: 20px;
-            color: #d1fae5;
-            background: rgba(255,255,255,.1);
+            color: var(--crema-bright);
+            background: rgba(255,255,255,.06);
             font-size: 12px;
+            font-weight: 600;
         }
 
         .content-area {
@@ -95,7 +108,7 @@
 
         .view-page {
             display: none;
-            animation: fadeIn .3s ease;
+            animation: fadeIn .35s ease;
         }
 
         .view-page.active {
@@ -103,7 +116,7 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(8px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
@@ -117,43 +130,56 @@
         }
 
         .balance-card {
+            position: relative;
             margin-bottom: 20px;
-            padding: 24px 20px;
-            border-color: rgba(16,185,129,.4);
-            border-radius: 20px;
+            padding: 28px 20px;
+            border-color: rgba(232,181,99,.35);
+            border-radius: 24px;
             text-align: center;
-            background: linear-gradient(135deg,rgba(16,185,129,.25),rgba(5,150,105,.1));
+            overflow: hidden;
+            background:
+                radial-gradient(circle at 50% -20%, rgba(244,201,122,.35), transparent 60%),
+                linear-gradient(135deg, rgba(193,122,63,.28), rgba(42,24,16,.35));
+            box-shadow: 0 20px 45px -25px rgba(232,181,99,.4), inset 0 1px 0 rgba(255,255,255,.08);
         }
 
         .balance-title {
-            color: #e2e8f0;
-            font-size: 14px;
+            color: #f0e2d0;
+            font-size: 13px;
             font-weight: 600;
+            letter-spacing: .3px;
         }
 
         .balance-amount {
-            margin: 10px 0;
-            font-size: 42px;
+            margin: 12px 0;
+            font-size: 44px;
             font-weight: 800;
+            letter-spacing: -1px;
+            background: linear-gradient(135deg, var(--crema-bright), var(--crema) 60%, var(--caramel));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .balance-unit,
         .section-title,
         .list-info p,
         .withdrawal-amount {
-            color: var(--primary);
+            color: var(--crema);
         }
 
         .balance-unit {
-            font-size: 18px;
+            font-size: 17px;
+            -webkit-text-fill-color: var(--crema);
         }
 
         .section-title {
-            margin: 20px 0 10px;
+            margin: 22px 0 12px;
             padding-bottom: 8px;
             border-bottom: 1px solid var(--card-border);
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 700;
+            letter-spacing: .2px;
         }
 
         .ads-grid {
@@ -169,7 +195,8 @@
             gap: 10px;
             margin-bottom: 10px;
             padding: 14px;
-            border-radius: 16px;
+            border-radius: 18px;
+            transition: border-color .2s ease;
         }
 
         .ads-grid .list-card {
@@ -178,12 +205,12 @@
             align-items: stretch;
             justify-content: space-between;
             margin: 0;
-            padding: 12px;
+            padding: 13px;
         }
 
         .ads-grid .btn {
             width: 100%;
-            padding: 9px 8px;
+            padding: 10px 8px;
         }
 
         .list-info {
@@ -204,32 +231,39 @@
         .btn,
         .btn-full {
             border: 0;
-            border-radius: 10px;
-            color: #022c22;
-            background: var(--primary);
+            border-radius: 12px;
+            color: #2a1810;
+            background: linear-gradient(135deg, var(--crema-bright), var(--crema));
             font-weight: 700;
             cursor: pointer;
+            transition: transform .15s ease, box-shadow .15s ease;
+        }
+
+        .btn:active,
+        .btn-full:active {
+            transform: scale(.97);
         }
 
         .btn {
-            padding: 8px 16px;
+            padding: 9px 16px;
             font-size: 13px;
+            box-shadow: 0 6px 16px -8px rgba(232,181,99,.6);
         }
 
         .btn:disabled,
         .btn.locked {
-            color: #94a3b8;
-            background: #334155;
+            color: #7d6a5c;
+            background: rgba(255,255,255,.06);
+            box-shadow: none;
             cursor: not-allowed;
         }
 
         .btn-full {
             width: 100%;
             margin-top: 15px;
-            padding: 15px;
-            color: white;
-            background: linear-gradient(135deg,var(--primary),var(--primary-dark));
+            padding: 16px;
             font-size: 16px;
+            box-shadow: 0 12px 28px -12px rgba(232,181,99,.55);
         }
 
         .bottom-nav {
@@ -240,7 +274,8 @@
             display: grid;
             grid-template-columns: repeat(4,1fr);
             border-top: 1px solid var(--card-border);
-            background: rgba(15,23,42,.97);
+            background: rgba(20,11,7,.95);
+            backdrop-filter: blur(20px);
         }
 
         .nav-item {
@@ -251,10 +286,11 @@
             gap: 4px;
             color: var(--text-muted);
             cursor: pointer;
+            transition: color .2s ease;
         }
 
         .nav-item.active {
-            color: var(--primary);
+            color: var(--crema);
         }
 
         .nav-item svg {
@@ -283,31 +319,36 @@
             margin-bottom: 15px;
             padding: 14px;
             border: 1px solid var(--card-border);
-            border-radius: 12px;
+            border-radius: 14px;
             outline: none;
-            color: white;
-            background: rgba(255,255,255,.05);
+            color: #fdf6ee;
+            background: rgba(255,255,255,.04);
+        }
+
+        .custom-input:focus,
+        .custom-select:focus {
+            border-color: var(--crema);
         }
 
         .custom-select option {
             color: white;
-            background: var(--bg-dark);
+            background: var(--espresso-deep);
         }
 
         .alert-success {
             display: none;
             margin-top: 15px;
             padding: 15px;
-            border: 1px solid var(--primary);
-            border-radius: 12px;
-            color: #d1fae5;
-            background: rgba(16,185,129,.2);
+            border: 1px solid var(--crema);
+            border-radius: 14px;
+            color: #fdf3e2;
+            background: rgba(232,181,99,.16);
             text-align: center;
             font-weight: bold;
         }
 
         .withdrawal-demo {
-            margin-top: 24px;
+            margin-top: 26px;
         }
 
         .demo-heading,
@@ -321,16 +362,16 @@
 
         .demo-heading h3,
         .withdrawal-header h3 {
-            color: var(--primary);
+            color: var(--crema);
             font-size: 16px;
         }
 
         .live-badge {
             padding: 4px 8px;
-            border: 1px solid rgba(239,68,68,.6);
+            border: 1px solid rgba(239,110,68,.6);
             border-radius: 20px;
-            color: #fca5a5;
-            background: rgba(239,68,68,.18);
+            color: #ffb08a;
+            background: rgba(239,110,68,.16);
             font-size: 10px;
             font-weight: bold;
         }
@@ -347,8 +388,8 @@
             align-items: center;
             gap: 10px;
             margin-bottom: 8px;
-            padding: 11px 12px;
-            border-radius: 14px;
+            padding: 12px;
+            border-radius: 16px;
         }
 
         .withdrawal-avatar {
@@ -359,8 +400,8 @@
             width: 34px;
             height: 34px;
             border-radius: 50%;
-            color: var(--primary);
-            background: rgba(16,185,129,.2);
+            color: var(--espresso);
+            background: linear-gradient(135deg, var(--crema-bright), var(--crema));
             font-size: 13px;
             font-weight: bold;
         }
@@ -395,18 +436,18 @@
             display: grid;
             grid-template-columns: repeat(3,1fr);
             gap: 8px;
-            margin: 15px 0;
+            margin: 16px 0;
         }
 
         .stat-card {
-            padding: 12px 6px;
-            border-radius: 14px;
+            padding: 13px 6px;
+            border-radius: 16px;
             text-align: center;
         }
 
         .stat-card strong {
             display: block;
-            color: var(--primary);
+            color: var(--crema);
             font-size: 16px;
         }
 
@@ -418,15 +459,15 @@
         }
 
         .comments-title {
-            margin: 22px 0 10px;
-            color: var(--primary);
+            margin: 24px 0 10px;
+            color: var(--crema);
             font-size: 15px;
         }
 
         .comment-card {
             margin-bottom: 8px;
-            padding: 11px;
-            border-radius: 13px;
+            padding: 12px;
+            border-radius: 15px;
         }
 
         .comment-card strong {
@@ -435,7 +476,7 @@
 
         .comment-card p {
             margin-top: 5px;
-            color: #cbd5e1;
+            color: #ddccbc;
             font-size: 12px;
         }
 
@@ -452,7 +493,7 @@
         .modal-overlay {
             flex-direction: column;
             color: white;
-            background: rgba(0,0,0,.9);
+            background: rgba(10,6,4,.92);
             text-align: center;
         }
 
@@ -464,23 +505,24 @@
             height: 120px;
             margin-bottom: 20px;
             border: 5px solid var(--card-border);
-            border-top-color: var(--primary);
+            border-top-color: var(--crema);
             border-radius: 50%;
-            color: var(--primary);
+            color: var(--crema);
             font-size: 40px;
             font-weight: bold;
+            animation: spin 2s linear infinite;
         }
 
         #loader {
             z-index: 200;
-            background: rgba(15,23,42,.8);
+            background: rgba(26,15,10,.82);
         }
 
         .spinner {
             width: 40px;
             height: 40px;
-            border: 4px solid rgba(16,185,129,.3);
-            border-top-color: var(--primary);
+            border: 4px solid rgba(232,181,99,.25);
+            border-top-color: var(--crema);
             border-radius: 50%;
             animation: spin .8s linear infinite;
         }
@@ -488,6 +530,9 @@
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
+
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-thumb { background: var(--card-border); border-radius: 4px; }
 
         @media (max-width:320px) {
             .ads-grid {
@@ -548,7 +593,7 @@
                 <div class="balance-card">
                     <div class="balance-title">የጋበዙት ሰው ብዛት</div>
                     <div class="balance-amount" id="refCount">0</div>
-                    <p style="font-size:13px;color:#d1fae5;margin-top:10px;">ለ1 ሰው <strong>100 ETB</strong> ያገኛሉ!</p>
+                    <p style="font-size:13px;color:#f4e3c8;margin-top:10px;">ለ1 ሰው <strong>100 ETB</strong> ያገኛሉ!</p>
                 </div>
 
                 <div class="input-group">
@@ -641,20 +686,33 @@
     <script>
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbylSsRt7gluxwDTS2QXcq4V5W80h2QCoQ2c8KenScwWTWcKeH3-hgJaBEc3ejKl4Bhj/exec";
 
-        let userId = "user_" + Math.floor(Math.random() * 10000);
+        let userId = "";
+        let username = "";
         let startParam = "";
 
         if (window.Telegram && window.Telegram.WebApp) {
             window.Telegram.WebApp.expand();
             const telegramUser = window.Telegram.WebApp.initDataUnsafe.user;
 
-            if (telegramUser) {
+            if (telegramUser && telegramUser.id) {
                 userId = telegramUser.id.toString();
+                username = telegramUser.username || telegramUser.first_name || "";
                 document.getElementById("userIdDisplay").innerText =
-                    "@" + (telegramUser.username || userId);
+                    "@" + (username || userId);
             }
 
             startParam = window.Telegram.WebApp.initDataUnsafe.start_param || "";
+        }
+
+        // Guard: never generate a random fallback userId — that was the bug
+        // that made balances disappear. If we can't get a real Telegram user,
+        // stop and tell the person to open the bot properly instead of
+        // silently creating a brand-new random account.
+        if (!userId) {
+            document.addEventListener("DOMContentLoaded", () => {
+                showLoader(false);
+                alert("እባክዎ ይህን ገጽ በቀጥታ ከቴሌግራም ቦት በኩል ይክፈቱ (Telegram Bot Menu Button ወይም Bunaairdropbot)።");
+            });
         }
 
         let state = {
@@ -742,8 +800,9 @@
         }
 
         window.onload = () => {
-            document.getElementById("refLink").value =
-                `https://t.me/YourBotUsername?startapp=${userId}`;
+            document.getElementById("refLink").value = userId
+                ? `https://t.me/Bunaairdropbot/buna?startapp=${userId}`
+                : "";
 
             renderWithdrawalDemo();
             renderCommentsAndStats();
@@ -772,11 +831,12 @@
 
         async function fetchData() {
             if (!SCRIPT_URL.startsWith("http")) return;
+            if (!userId) return; // never call the backend with no real Telegram user
             showLoader(true);
 
             try {
                 const response = await fetch(
-                    `${SCRIPT_URL}?action=getUser&userId=${userId}&refBy=${startParam}`
+                    `${SCRIPT_URL}?action=getUser&userId=${userId}&username=${encodeURIComponent(username)}&refBy=${startParam}`
                 );
                 state = await response.json();
                 updateUI();
@@ -822,30 +882,37 @@
             `).join("");
         }
 
-        let timerInterval;
+        let isAdPlaying = false;
 
         function startAd() {
+            if (isAdPlaying) return;
+            if (typeof show_11532819 !== "function") {
+                alert("ማስታወቂያው መጫን አልቻለም። እባክዎ ትንሽ ቆይተው እንደገና ይሞክሩ።");
+                return;
+            }
+
+            isAdPlaying = true;
             const modal = document.getElementById("adModal");
             const timerText = document.getElementById("timerText");
             modal.style.display = "flex";
+            timerText.innerText = "⏳";
 
-            let timeLeft = 15;
-            timerText.innerText = timeLeft;
-            clearInterval(timerInterval);
-
-            timerInterval = setInterval(() => {
-                timerText.innerText = --timeLeft;
-
-                if (timeLeft <= 0) {
-                    clearInterval(timerInterval);
-                    modal.style.display = "none";
-                    claimAdReward();
-                }
-            },1000);
+            show_11532819().then(() => {
+                // User watched the ad fully — now safe to credit the reward
+                modal.style.display = "none";
+                isAdPlaying = false;
+                claimAdReward();
+            }).catch(() => {
+                // Ad failed, was skipped, or errored — no reward
+                modal.style.display = "none";
+                isAdPlaying = false;
+                alert("ማስታወቂያውን ማጠናቀቅ አልተቻለም። እባክዎ እንደገና ይሞክሩ።");
+            });
         }
 
         async function claimAdReward() {
             if (!SCRIPT_URL.startsWith("http")) return;
+            if (!userId) return;
             showLoader(true);
 
             try {
@@ -867,7 +934,8 @@
         }
 
         async function doTask(taskId) {
-            window.open("https://t.me/YourBotUsername","_blank");
+            if (!userId) return;
+            window.open("https://t.me/Bunaairdropbot","_blank");
             if (!SCRIPT_URL.startsWith("http")) return;
             showLoader(true);
 
@@ -892,6 +960,7 @@
         }
 
         async function requestWithdrawal() {
+            if (!userId) return;
             const method = document.getElementById("payMethod").value;
             const account = document.getElementById("payAccount").value.trim();
 
