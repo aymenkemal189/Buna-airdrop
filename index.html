@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="am">
 <head>
-    <script src='//libtl.com/sdk.js' data-zone='11532819' data-sdk='show_11532819'></script>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script src='//libtl.com/sdk.js' data-zone='11532819' data-sdk='show_11532819'></script>
 <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ቡና ኤርድሮፕ</title>
@@ -582,8 +583,8 @@
 
             <div id="page-earn" class="view-page">
                 <div class="section-title">ማስታወቂያ እይታ (15 ETB)</div>
-                <p class="muted-text">በአንድ ጊዜ 4 ማስታወቂያዎች ብቻ ይታያሉ። አራቱ ሲጠናቀቁ ቀጣዮቹ 4 ይከፈታሉ።</p>
-                <div id="ads-container" class="ads-grid"></div>
+                <p class="muted-text">ገደብ የለሽ! “እይ” የሚለውን ተጭነው ማስታወቂያውን ለ15 ሰከንድ ሙሉ ይመልከቱ፣ በተመለከቱ ቁጥር ይከፈልዎታል።</p>
+                <div id="ads-container"></div>
 
                 <div class="section-title" style="margin-top:30px;">ቋሚ ስራዎች (30 ETB)</div>
                 <div id="tasks-container"></div>
@@ -689,30 +690,22 @@
         let userId = "";
         let username = "";
         let startParam = "";
+        let telegramReady = false;
 
         if (window.Telegram && window.Telegram.WebApp) {
-            window.Telegram.WebApp.expand();
-            const telegramUser = window.Telegram.WebApp.initDataUnsafe.user;
+            const tg = window.Telegram.WebApp;
+            tg.ready();
+            tg.expand();
+
+            const telegramUser = tg.initDataUnsafe.user;
 
             if (telegramUser && telegramUser.id) {
                 userId = telegramUser.id.toString();
                 username = telegramUser.username || telegramUser.first_name || "";
-                document.getElementById("userIdDisplay").innerText =
-                    "@" + (username || userId);
+                telegramReady = true;
             }
 
-            startParam = window.Telegram.WebApp.initDataUnsafe.start_param || "";
-        }
-
-        // Guard: never generate a random fallback userId — that was the bug
-        // that made balances disappear. If we can't get a real Telegram user,
-        // stop and tell the person to open the bot properly instead of
-        // silently creating a brand-new random account.
-        if (!userId) {
-            document.addEventListener("DOMContentLoaded", () => {
-                showLoader(false);
-                alert("እባክዎ ይህን ገጽ በቀጥታ ከቴሌግራም ቦት በኩል ይክፈቱ (Telegram Bot Menu Button ወይም Bunaairdropbot)።");
-            });
+            startParam = tg.initDataUnsafe.start_param || "";
         }
 
         let state = {
@@ -723,13 +716,13 @@
         };
 
         const taskList = [
-            {id:"tg1",name:"ቴሌግራም ቻናል 1 ተቀላቀል"},
-            {id:"tg2",name:"ቴሌግራም ቻናል 2 ተቀላቀል"},
-            {id:"tg3",name:"ቴሌግራም ግሩፕ ተቀላቀል"},
-            {id:"tg4",name:"ስፖንሰር ቻናል ተቀላቀል"},
-            {id:"tg5",name:"የዜና ቻናል ተቀላቀል"},
-            {id:"yt1",name:"ዩትዩብ ሰብስክራይብ አድርግ"},
-            {id:"yt2",name:"ዩትዩብ ቪዲዮ እይ"}
+            {id:"tg1",name:"ቴሌግራም ቻናል 1 ተቀላቀል",link:"https://t.me/bunaairdrop"},
+            {id:"tg2",name:"ቴሌግራም ቻናል 2 ተቀላቀል",link:"https://t.me/bunaairdrop1"},
+            {id:"tg3",name:"ቴሌግራም ቻናል 3 ተቀላቀል",link:"https://t.me/bunaairdrop2"},
+            {id:"tg4",name:"ቴሌግራም ቻናል 4 ተቀላቀል",link:"https://t.me/Bunaairdrop3"},
+            {id:"tg5",name:"ቴሌግራም ቻናል 5 ተቀላቀል",link:"https://t.me/bunaairdrop5"},
+            {id:"yt1",name:"ዩትዩብ ሰብስክራይብ አድርግ",link:"https://youtube.com/@janomusic0?si=3m-d4OLXzTBuIbSV"},
+            {id:"yt2",name:"ዩትዩብ ቪዲዮ እይ",link:"https://youtu.be/WgRzYGYDDOs?si=an_2oGgLc7aTXzDY"}
         ];
 
         const demoNames = [
@@ -800,6 +793,13 @@
         }
 
         window.onload = () => {
+            if (telegramReady) {
+                document.getElementById("userIdDisplay").innerText = "@" + (username || userId);
+            } else {
+                document.getElementById("userIdDisplay").innerText = "@guest";
+                alert("እባክዎ ይህን ገጽ በቀጥታ ከቴሌግራም ቦት በኩል ይክፈቱ (Bunaairdropbot Menu Button)።");
+            }
+
             document.getElementById("refLink").value = userId
                 ? `https://t.me/Bunaairdropbot/buna?startapp=${userId}`
                 : "";
@@ -811,6 +811,7 @@
             setInterval(renderWithdrawalDemo,60000);
             setInterval(renderCommentsAndStats,180000);
             fetchData();
+            startAutoAds();
         };
 
         function switchTab(pageId,navEl) {
@@ -848,25 +849,17 @@
         }
 
         function renderAdsAndTasks() {
-            const progress = Number(state.adProgress || 0);
-            const firstAd = Math.floor(progress / 4) * 4 + 1;
             const adContainer = document.getElementById("ads-container");
+            const totalWatched = Number(state.adProgress || 0);
 
-            adContainer.innerHTML = Array.from({length:4},(_,index) => {
-                const adNumber = firstAd + index;
-                const unlocked = adNumber === progress + 1;
-
-                return `
-                    <div class="list-card">
-                        <div class="list-info">
-                            <h4>ማስታወቂያ ${adNumber}</h4>
-                            <p>+15 ETB</p>
-                        </div>
-                        ${unlocked
-                            ? '<button class="btn" onclick="startAd()">እይ</button>'
-                            : '<button class="btn locked" disabled>🔒 ተቆልፏል</button>'}
-                    </div>`;
-            }).join("");
+            adContainer.innerHTML = `
+                <div class="list-card">
+                    <div class="list-info">
+                        <h4>ማስታወቂያ ይመልከቱ</h4>
+                        <p>+15 ETB · የተመለከቱት: ${totalWatched}</p>
+                    </div>
+                    <button class="btn" id="watchAdBtn" onclick="startAd()">እይ</button>
+                </div>`;
 
             const completed = String(state.completedTasks || "");
             document.getElementById("tasks-container").innerHTML = taskList.map(task => `
@@ -892,21 +885,51 @@
             }
 
             isAdPlaying = true;
+            const btn = document.getElementById("watchAdBtn");
+            if (btn) { btn.disabled = true; btn.innerText = "እየታየ..."; }
+
             const modal = document.getElementById("adModal");
             const timerText = document.getElementById("timerText");
             modal.style.display = "flex";
-            timerText.innerText = "⏳";
 
+            let secondsLeft = 15;
+            timerText.innerText = secondsLeft;
+            const countdown = setInterval(() => {
+                secondsLeft -= 1;
+                if (secondsLeft >= 0) timerText.innerText = secondsLeft;
+                if (secondsLeft <= 0) clearInterval(countdown);
+            }, 1000);
+
+            // Rewarded ad: pays out ONLY when the promise resolves (ad watched fully)
             show_11532819().then(() => {
-                // User watched the ad fully — now safe to credit the reward
+                clearInterval(countdown);
                 modal.style.display = "none";
                 isAdPlaying = false;
+                if (btn) { btn.disabled = false; btn.innerText = "እይ"; }
                 claimAdReward();
             }).catch(() => {
-                // Ad failed, was skipped, or errored — no reward
+                clearInterval(countdown);
                 modal.style.display = "none";
                 isAdPlaying = false;
+                if (btn) { btn.disabled = false; btn.innerText = "እይ"; }
                 alert("ማስታወቂያውን ማጠናቀቅ አልተቻለም። እባክዎ እንደገና ይሞክሩ።");
+            });
+        }
+
+        // Auto in-app interstitial: Monetag shows its own ads periodically for
+        // ad revenue. This NEVER credits ETB — only the manual "Watch Ad"
+        // button above (which requires the 15s rewarded format) pays out.
+        function startAutoAds() {
+            if (typeof show_11532819 !== "function") return;
+            show_11532819({
+                type: 'inApp',
+                inAppSettings: {
+                    frequency: 1,
+                    capping: 0.0167, // ~1 minute
+                    interval: 60,
+                    timeout: 5,
+                    everyPage: false
+                }
             });
         }
 
@@ -935,7 +958,10 @@
 
         async function doTask(taskId) {
             if (!userId) return;
-            window.open("https://t.me/Bunaairdropbot","_blank");
+            const task = taskList.find(t => t.id === taskId);
+            if (task && task.link) {
+                window.open(task.link, "_blank");
+            }
             if (!SCRIPT_URL.startsWith("http")) return;
             showLoader(true);
 
