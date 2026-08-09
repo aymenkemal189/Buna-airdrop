@@ -650,7 +650,7 @@
     <div class="app-shell">
         <div class="header">
             <div class="brand">
-                <img src="YOUR_LOGO_URL_HERE" alt="Logo"
+                <img src="https://i.postimg.cc/0QgVXWXK/20260809-234658.jpg" alt="Logo"
                      onerror="this.src='https://cdn-icons-png.flaticon.com/512/2885/2885560.png'">
                 <span>ቡና Airdrop</span>
             </div>
@@ -712,8 +712,8 @@
 
                 <div class="balance-card" style="padding:18px;">
                     <div class="balance-title">የማውጣት ሁኔታ</div>
-                    <p style="font-size:14px;margin-top:10px;">✅ ዝቅተኛ ሂሳብ: <strong>1,000 ETB</strong></p>
-                    <p style="font-size:14px;margin-top:5px;">✅ የሚያስፈልግ ሪፈራል: <strong>15 ሰው</strong></p>
+                    <p style="font-size:14px;margin-top:10px;">ዝቅተኛ ሂሳብ: <strong>1,000 ETB</strong></p>
+                    <p style="font-size:14px;margin-top:5px;">ማውጣት ይችላሉ: <strong>1000 ሲሞላ</strong></p>
                 </div>
 
                 <div class="withdrawal-stats">
@@ -790,7 +790,6 @@
 
     <script>
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbylSsRt7gluxwDTS2QXcq4V5W80h2QCoQ2c8KenScwWTWcKeH3-hgJaBEc3ejKl4Bhj/exec";
-
         let userId = "";
         let username = "";
         let startParam = "";
@@ -845,10 +844,10 @@
         const paymentMethods = ["Telebirr","CBE Birr","Awash Bank","Commercial Bank of Ethiopia"];
         const timeLabels = ["5 ደቂቃ በፊት","12 ደቂቃ በፊት","1 ሰዓት በፊት","3 ሰዓት በፊት","4 ሰዓት በፊት"];
         const comments = [
-            ["ሚሚ ሀይሌ","ክፍያዬን በፍጥነት ተቀብያለሁ። አመሰግናለሁ!"],
-            ["ዮናስ ጌታቸው","Telebirr ላይ በሰላም ደርሶኛል።"],
+            ["እየሩስ ሀይሌ","ክፍያዬን በፍጥነት ተቀብያለሁ። አመሰግናለሁ!"],
+            ["ዮናስ ጌታቸው","Telebirr ላይ በሰፍጥነት ደርሶኛል።"],
             ["ሊያ ታደሰ","የማውጣት ሂደቱ ቀላል እና ግልጽ ነው።"],
-            ["ሳሙኤል በቀለ","CBE Birr ክፍያዬ ተሳክቷል።"]
+            ["ሳሙኤል በቀለ","CBE Birr ክፍያዬ ተሸቀብያለሁ።"]
         ];
 
         let withdrawalPage = 0;
@@ -1019,17 +1018,19 @@
 
         /* ============ SOCIAL FEED (localStorage only — never touches Google Sheet) ============ */
         // To update: change "image" below to your daily photo link. Name/profile stay fixed as requested.
+        const BUNA_LOGO = "https://i.postimg.cc/0QgVXWXK/20260809-234658.jpg";
+
         const socialPosts = [
-            {id:"post1", name:"Buna Airdrop", handle:"@bunaairdrop", image:"https://i.postimg.cc/g28HjjLg/Buna-with-moya.jpg", description:"ሞክክሩት እስኪ ከከፈለ😂"},
-            {id:"post2", name:"Buna Airdrop", handle:"@bunaairdrop", image:"https://i.postimg.cc/522FdtqF/The-Iconic-Beni-Ameer-Picture-Tigre-Tribe.jpg", description:"PASTE_DESCRIPTION_2_HERE"},
-            {id:"post3", name:"Buna Airdrop", handle:"@bunaairdrop", image:"PASTE_IMAGE_LINK_3_HERE", description:"PASTE_DESCRIPTION_3_HERE"},
-            {id:"post4", name:"Buna Airdrop", handle:"@bunaairdrop", image:"PASTE_IMAGE_LINK_4_HERE", description:"PASTE_DESCRIPTION_4_HERE"},
-            {id:"post5", name:"Buna Airdrop", handle:"@bunaairdrop", image:"PASTE_IMAGE_LINK_5_HERE", description:"PASTE_DESCRIPTION_5_HERE"},
-            {id:"post6", name:"Buna Airdrop", handle:"@bunaairdrop", image:"PASTE_IMAGE_LINK_6_HERE", description:"PASTE_DESCRIPTION_6_HERE"},
-            {id:"post7", name:"Buna Airdrop", handle:"@bunaairdrop", image:"PASTE_IMAGE_LINK_7_HERE", description:"PASTE_DESCRIPTION_7_HERE"},
-            {id:"post8", name:"Buna Airdrop", handle:"@bunaairdrop", image:"PASTE_IMAGE_LINK_8_HERE", description:"PASTE_DESCRIPTION_8_HERE"},
-            {id:"post9", name:"Buna Airdrop", handle:"@bunaairdrop", image:"PASTE_IMAGE_LINK_9_HERE", description:"PASTE_DESCRIPTION_9_HERE"},
-            {id:"post10", name:"Buna Airdrop", handle:"@bunaairdrop", image:"PASTE_IMAGE_LINK_10_HERE", description:"PASTE_DESCRIPTION_10_HERE"}
+            {id:"post1", name:"Natnael Woldemariam", handle:"@natnael3", image:"https://i.postimg.cc/WzFcmJQ8/73763e28-c1ff-4e95-97af-4d91c47bfa1b.jpg", description:"የቀንዎን ጅምር በጣፋጭ የኢትዮጵያ ቡና ያሳምሩ። ቡናችን ከጥሩ መዓዛው ባሻገር የፍቅር እና የአንድነት መገለጫችን ነው።"},
+            {id:"post2", name:"Mikael Tesfaye", handle:"@mikaelt1", image:"https://i.postimg.cc/3x7JhtM7/a1229d78-3aff-471f-abd1-8456266cef3f.jpg", description:"የጀበና ቡናን ቃና እያጣጣሙ የድካም ስሜትዎን ያስወግዱ። ቡና ለኛ ኢትዮጵያውያን ከማነቃቂያነትም አልፎ የባህል እና የክብር ምልክት ነው።"},
+            {id:"post3", name:"Dawit Assefa", handle:"@dawita1", image:"https://i.postimg.cc/KYw6GYKF/ethiopian-culture.jpg", description:"በሲኒ የተሞላው ጥቁር ወርቃችን ለጠዋት ተነሳሽነት፣ ለከሰዓት ጨዋታ ምርጥ አጋር ነው። የቡና ቁርስ አቅርበን በጋራ እንቋደስ።"},
+            {id:"post4", name:"Samuel Gebremichael", handle:"@samuel4", image:"https://i.postimg.cc/hjR2ZQzJ/bu-ta-ma.jpg", description:"የቡናው እጣን ጢስና ልዩ መዓዛ ወደ ቤታችሁ ይግባ። አቦል፣ ቶና፣ በረካ እያልን ስንጠጣ ከጎረቤት ጋር ያለንን ትስስር እናጠናክራለን።"},
+            {id:"post5", name:"Yosef Hailu", handle:"@yosef21", image:"https://i.postimg.cc/5tstnLRJ/oc-characteredesign-digitalart-illustration.jpg", description:"አእምሮዎን ዘና የሚያደርገውን ይህን ተፈጥሯዊ ስጦታ አብረን እናጣጥም። ቡና የሃሳብ ምንጭ፣ የጓደኝነት መጀመሪያ እና የሰላም መድረክ ነው።"},
+            {id:"post6", name:"Million Desta", handle:"@million9", image:"https://i.postimg.cc/hPN36tYQ/The-start-of-an-Ethiopian-Roadtrip-Arriving-in-Addis-Ababa.jpg", description:"ሞቅ ያለ የቡና ስነ-ስርዓት በቤታችሁ አድምቁ። የኢትዮጵያ ቡና ልዩ የሆነው በጣዕሙ ብቻ ሳይሆን በሚጠጣበት የፍቅር መንፈስም ጭምር ነው።"},
+            {id:"post7", name:"Hana Belay", handle:"@hana19", image:"https://i.postimg.cc/tT06GLj5/5fc2dcb8-35eb-4629-9f85-07586687fd5e.jpg", description:"ቡናን በጠዋት መጠጣት ቀኑን ሙሉ ንቁ እና ብሩህ ሆኖ ለመዋል ይረዳል። የጀበናው ድምፅ ራሱ ልዩ ሙዚቃ ነው።"},
+            {id:"post8", name:"Sara Mekonnen", handle:"@saram7", image:"https://i.postimg.cc/FHd1FDGP/photography-coffee.jpg", description:"እውነተኛውን የቡና ጣዕም ከቤተሰብ ጋር ሆነው ይካፈሉ። ቡና መገናኛችን፣ መወያያችን እና መተሳሰሪያችን የሆነ ድንቅ ፀጋ ነው።"},
+            {id:"post9", name:"Ruth Abebe", handle:"@ruthab1", image:"https://i.postimg.cc/zXMXQT5R/0cf2a5fe-eda4-49cb-98d0-f390b3693747.jpg", description:"በየቀኑ በህይወታችን ውስጥ ያለውን የቡናን ጣዕም እናስታውስ። ቡና ስንጠጣ ደስታችንም በእጥፍ ይጨምራል። ጤና ይስጥልን፣ ኑ ቡና እንጠጣ!"},
+            {id:"post10", name:"Meron Getachew", handle:"@merong2", image:"https://i.postimg.cc/dQgVH8Jk/A-Cup-Of-Love.jpg", description:"ከጥንት ጀምሮ የነበረው የቡና ባህላችን ዛሬም ድረስ ሞቅታውና ውበቱ አልቀነሰም። የጀበና ቡና ሲጠጣ ልብን በደስታ ይሞላል።"}
         ];
 
         function getSocialLikes() {
@@ -1063,7 +1064,7 @@
             container.innerHTML = socialPosts.map(post => `
                 <div class="social-post">
                     <div class="social-post-header">
-                        <img class="social-post-avatar" src="${post.avatar || ''}" onerror="this.style.background='linear-gradient(135deg,var(--crema-bright),var(--crema))';this.src='';">
+                        <img class="social-post-avatar" src="${post.avatar || BUNA_LOGO}" onerror="this.style.background='linear-gradient(135deg,var(--crema-bright),var(--crema))';this.src='';">
                         <div>
                             <div class="social-post-name">${post.name}</div>
                             <div class="social-post-handle">${post.handle}</div>
@@ -1137,15 +1138,16 @@
         // Auto in-app interstitial: Monetag shows its own ads periodically for
         // ad revenue. This NEVER credits ETB — only the manual "Watch Ad"
         // button above (which requires the 15s rewarded format) pays out.
+        // First ad only after 2 minutes of being in the app, then repeats every 1 minute.
         function startAutoAds() {
             if (typeof show_11532819 !== "function") return;
             show_11532819({
                 type: 'inApp',
                 inAppSettings: {
                     frequency: 1,
-                    capping: 0.0667, // ~4 minutes
-                    interval: 240,
-                    timeout: 5,
+                    capping: 0.0667, // ~4 minute rolling window
+                    interval: 60,    // repeat every 1 minute after the first ad
+                    timeout: 120,    // wait 2 minutes before the very first ad
                     everyPage: false
                 }
             });
