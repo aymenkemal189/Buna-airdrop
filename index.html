@@ -273,7 +273,7 @@
             width: 100%;
             height: 70px;
             display: grid;
-            grid-template-columns: repeat(4,1fr);
+            grid-template-columns: repeat(5,1fr);
             border-top: 1px solid var(--card-border);
             background: rgba(20,11,7,.95);
             backdrop-filter: blur(20px);
@@ -295,16 +295,17 @@
         }
 
         .nav-item svg {
-            width: 22px;
-            height: 22px;
+            width: 20px;
+            height: 20px;
             fill: none;
             stroke: currentColor;
             stroke-width: 2;
         }
 
         .nav-item span {
-            font-size: 11px;
+            font-size: 10px;
             font-weight: bold;
+            white-space: nowrap;
         }
 
         .input-group label {
@@ -535,6 +536,109 @@
         ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-thumb { background: var(--card-border); border-radius: 4px; }
 
+        .social-post {
+            margin-bottom: 18px;
+            border: 1px solid var(--card-border);
+            border-radius: 18px;
+            background: var(--card-bg);
+            overflow: hidden;
+        }
+
+        .social-post-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+        }
+
+        .social-post-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            object-fit: cover;
+            flex: 0 0 38px;
+            background: linear-gradient(135deg, var(--crema-bright), var(--crema));
+        }
+
+        .social-post-name {
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .social-post-handle {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .social-follow-btn {
+            margin-left: auto;
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 6px 14px;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--crema);
+            background: rgba(255,255,255,.04);
+            cursor: pointer;
+        }
+
+        .social-post-image {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            display: block;
+            background: linear-gradient(135deg, rgba(193,122,63,.35), rgba(42,24,16,.5));
+        }
+
+        .social-post-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 10px 12px;
+        }
+
+        .social-action-btn {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            border: 0;
+            background: none;
+            color: var(--text-muted);
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        .social-action-btn svg {
+            width: 21px;
+            height: 21px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+        }
+
+        .social-action-btn.liked {
+            color: #ff6b5e;
+        }
+
+        .social-action-btn.liked svg {
+            fill: #ff6b5e;
+            stroke: #ff6b5e;
+        }
+
+        .social-post-caption {
+            padding: 0 12px 14px;
+            font-size: 12.5px;
+            line-height: 1.5;
+            color: #ddccbc;
+        }
+
+        .social-post-caption strong {
+            color: #fdf6ee;
+            margin-right: 5px;
+        }
+
         @media (max-width:320px) {
             .ads-grid {
                 grid-template-columns: 1fr;
@@ -571,23 +675,19 @@
                     እንኳን በደህና መጡ! ስራዎችን በመስራት እና ሰዎችን በመጋበዝ ገንዘብ ያግኙ።
                 </p>
 
-                <div class="withdrawal-demo">
-                    <div class="demo-heading">
-                        <h3>የቅርብ ጊዜ ክፍያዎች</h3>
-                        <span class="live-badge">● LIVE DEMO</span>
-                    </div>
-                    <p class="demo-description">ከ50 የማሳያ ስሞች 5 ስሞች በየ1 ደቂቃው ይቀያየራሉ።</p>
-                    <div id="withdrawal-demo-list"></div>
-                </div>
+                <div class="section-title" style="margin-top:26px;">ቋሚ ስራዎች (30 ETB)</div>
+                <div id="home-tasks-container"></div>
             </div>
 
             <div id="page-earn" class="view-page">
                 <div class="section-title">ማስታወቂያ እይታ (15 ETB)</div>
-                <p class="muted-text">ገደብ የለሽ! “እይ” የሚለውን ተጭነው ማስታወቂያውን ለ15 ሰከንድ ሙሉ ይመልከቱ፣ በተመለከቱ ቁጥር ይከፈልዎታል።</p>
+                <p class="muted-text">በአንድ ዙር 50 ማስታወቂያዎች ብቻ ይታያሉ። 50ዎቹ ሲያልቁ አዲስ 50 ይከፈታል።</p>
                 <div id="ads-container"></div>
+            </div>
 
-                <div class="section-title" style="margin-top:30px;">ቋሚ ስራዎች (30 ETB)</div>
-                <div id="tasks-container"></div>
+            <div id="page-social" class="view-page">
+                <div class="section-title" style="margin-top:0;">ልጥፎች</div>
+                <div id="social-feed-container"></div>
             </div>
 
             <div id="page-referral" class="view-page">
@@ -664,6 +764,10 @@
             <div class="nav-item" onclick="switchTab('earn',this)">
                 <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
                 <span>ስራዎች</span>
+            </div>
+            <div class="nav-item" onclick="switchTab('social',this)">
+                <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+                <span>ልጥፎች</span>
             </div>
             <div class="nav-item" onclick="switchTab('referral',this)">
                 <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/></svg>
@@ -751,8 +855,10 @@
         let commentPage = 0;
 
         function renderWithdrawalDemo() {
+            const listEl = document.getElementById("withdrawal-demo-list");
+            if (!listEl) return; // removed from Home page per request; safe no-op
             const start = withdrawalPage * 5;
-            document.getElementById("withdrawal-demo-list").innerHTML =
+            listEl.innerHTML =
                 demoNames.slice(start,start + 5).map((name,index) => {
                     const n = start + index;
                     return `
@@ -807,6 +913,7 @@
             renderWithdrawalDemo();
             renderCommentsAndStats();
             renderAdsAndTasks();
+            renderSocialFeed();
 
             setInterval(renderWithdrawalDemo,60000);
             setInterval(renderCommentsAndStats,180000);
@@ -848,21 +955,51 @@
             showLoader(false);
         }
 
-        function renderAdsAndTasks() {
+        const AD_BATCH_SIZE = 50;
+
+        function getAdBatchWatched() {
+            return Number(localStorage.getItem("bunaAdBatchWatched") || 0);
+        }
+
+        function incrementAdBatchWatched() {
+            let n = getAdBatchWatched() + 1;
+            if (n >= AD_BATCH_SIZE) {
+                localStorage.setItem("bunaAdBatchWatched", 0); // batch complete, fresh 50 unlocked
+                return AD_BATCH_SIZE; // return 50 so the "batch complete" message still fires correctly
+            }
+            localStorage.setItem("bunaAdBatchWatched", n);
+            return n;
+        }
+
+        function renderAds() {
             const adContainer = document.getElementById("ads-container");
-            const totalWatched = Number(state.adProgress || 0);
+            const batchWatched = getAdBatchWatched();
 
-            adContainer.innerHTML = `
-                <div class="list-card">
-                    <div class="list-info">
-                        <h4>ማስታወቂያ ይመልከቱ</h4>
-                        <p>+15 ETB · የተመለከቱት: ${totalWatched}</p>
-                    </div>
-                    <button class="btn" id="watchAdBtn" onclick="startAd()">እይ</button>
-                </div>`;
+            let cards = "";
+            for (let i = 1; i <= AD_BATCH_SIZE; i++) {
+                const isDone = i <= batchWatched;
+                const isNext = i === batchWatched + 1;
+                cards += `
+                    <div class="list-card">
+                        <div class="list-info">
+                            <h4>ማስታወቂያ #${i}</h4>
+                            <p>+15 ETB</p>
+                        </div>
+                        ${isDone
+                            ? '<button class="btn locked" disabled>✅ ታይቷል</button>'
+                            : isNext
+                                ? `<button class="btn" id="watchAdBtn" onclick="startAd()">እይ</button>`
+                                : '<button class="btn locked" disabled>🔒 ተራ ይጠብቁ</button>'}
+                    </div>`;
+            }
+            adContainer.innerHTML = cards;
+        }
 
+        function renderHomeTasks() {
             const completed = String(state.completedTasks || "");
-            document.getElementById("tasks-container").innerHTML = taskList.map(task => `
+            const container = document.getElementById("home-tasks-container");
+            if (!container) return;
+            container.innerHTML = taskList.map(task => `
                 <div class="list-card">
                     <div class="list-info">
                         <h4>${task.name}</h4>
@@ -871,6 +1008,87 @@
                     ${completed.includes(task.id)
                         ? '<button class="btn locked" disabled>✅ ተሰርቷል</button>'
                         : `<button class="btn" onclick="doTask('${task.id}')">ስራ</button>`}
+                </div>
+            `).join("");
+        }
+
+        function renderAdsAndTasks() {
+            renderAds();
+            renderHomeTasks();
+        }
+
+        /* ============ SOCIAL FEED (localStorage only — never touches Google Sheet) ============ */
+        // To update: change "image" below to your daily photo link. Name/profile stay fixed as requested.
+        const socialPosts = [
+            {id:"post1", name:"Buna Airdrop", handle:"@bunaairdrop", image:"PASTE_IMAGE_LINK_1_HERE", description:"PASTE_DESCRIPTION_1_HERE"},
+            {id:"post2", name:"Buna Airdrop", handle:"@bunaairdrop", image:"PASTE_IMAGE_LINK_2_HERE", description:"PASTE_DESCRIPTION_2_HERE"},
+            {id:"post3", name:"Buna Airdrop", handle:"@bunaairdrop", image:"PASTE_IMAGE_LINK_3_HERE", description:"PASTE_DESCRIPTION_3_HERE"},
+            {id:"post4", name:"Buna Airdrop", handle:"@bunaairdrop", image:"PASTE_IMAGE_LINK_4_HERE", description:"PASTE_DESCRIPTION_4_HERE"},
+            {id:"post5", name:"Buna Airdrop", handle:"@bunaairdrop", image:"PASTE_IMAGE_LINK_5_HERE", description:"PASTE_DESCRIPTION_5_HERE"},
+            {id:"post6", name:"Buna Airdrop", handle:"@bunaairdrop", image:"PASTE_IMAGE_LINK_6_HERE", description:"PASTE_DESCRIPTION_6_HERE"},
+            {id:"post7", name:"Buna Airdrop", handle:"@bunaairdrop", image:"PASTE_IMAGE_LINK_7_HERE", description:"PASTE_DESCRIPTION_7_HERE"},
+            {id:"post8", name:"Buna Airdrop", handle:"@bunaairdrop", image:"PASTE_IMAGE_LINK_8_HERE", description:"PASTE_DESCRIPTION_8_HERE"},
+            {id:"post9", name:"Buna Airdrop", handle:"@bunaairdrop", image:"PASTE_IMAGE_LINK_9_HERE", description:"PASTE_DESCRIPTION_9_HERE"},
+            {id:"post10", name:"Buna Airdrop", handle:"@bunaairdrop", image:"PASTE_IMAGE_LINK_10_HERE", description:"PASTE_DESCRIPTION_10_HERE"}
+        ];
+
+        function getSocialLikes() {
+            try { return JSON.parse(localStorage.getItem("bunaSocialLikes") || "{}"); }
+            catch(e) { return {}; }
+        }
+
+        function toggleLike(postId, btnEl) {
+            const likes = getSocialLikes();
+            likes[postId] = !likes[postId];
+            localStorage.setItem("bunaSocialLikes", JSON.stringify(likes));
+            btnEl.classList.toggle("liked", likes[postId]);
+            btnEl.querySelector("span").innerText = likes[postId] ? "ወድጄዋለሁ" : "ውደድ";
+        }
+
+        function followClick(btnEl) {
+            btnEl.innerText = "Following";
+            btnEl.disabled = true;
+            btnEl.style.opacity = ".6";
+        }
+
+        function comingSoon() {
+            alert("በቅርቡ ይመጣል (Coming Soon)");
+        }
+
+        function renderSocialFeed() {
+            const container = document.getElementById("social-feed-container");
+            if (!container) return;
+            const likes = getSocialLikes();
+
+            container.innerHTML = socialPosts.map(post => `
+                <div class="social-post">
+                    <div class="social-post-header">
+                        <img class="social-post-avatar" src="${post.avatar || ''}" onerror="this.style.background='linear-gradient(135deg,var(--crema-bright),var(--crema))';this.src='';">
+                        <div>
+                            <div class="social-post-name">${post.name}</div>
+                            <div class="social-post-handle">${post.handle}</div>
+                        </div>
+                        <button class="social-follow-btn" onclick="followClick(this)">Follow</button>
+                    </div>
+                    <img class="social-post-image" src="${post.image}" alt="post" onerror="this.style.display='none';">
+                    <div class="social-post-actions">
+                        <button class="social-action-btn ${likes[post.id] ? 'liked' : ''}" onclick="toggleLike('${post.id}', this)">
+                            <svg viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>
+                            <span>${likes[post.id] ? "ወድጄዋለሁ" : "ውደድ"}</span>
+                        </button>
+                        <button class="social-action-btn" onclick="comingSoon()">
+                            <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                            <span>አስተያየት</span>
+                        </button>
+                        <button class="social-action-btn" onclick="comingSoon()">
+                            <svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+                            <span>የምወደው</span>
+                        </button>
+                    </div>
+                    ${post.description ? `
+                    <div class="social-post-caption">
+                        <strong>${post.handle}</strong> ${post.description}
+                    </div>` : ''}
                 </div>
             `).join("");
         }
@@ -925,12 +1143,19 @@
                 type: 'inApp',
                 inAppSettings: {
                     frequency: 1,
-                    capping: 0.0167, // ~1 minute
-                    interval: 60,
+                    capping: 0.0667, // ~4 minutes
+                    interval: 240,
                     timeout: 5,
                     everyPage: false
                 }
             });
+        }
+
+        // Shown right after a rewarded ad finishes and pays out — this extra
+        // ad is for revenue only and never adds ETB to the user's balance.
+        function showBonusInterstitial() {
+            if (typeof show_11532819 !== "function") return;
+            show_11532819('pop').catch(() => {}); // ignore errors/skips silently, no reward either way
         }
 
         async function claimAdReward() {
@@ -946,8 +1171,14 @@
                 if (data.success) {
                     state.balance = data.balance;
                     state.adProgress = data.adProgress;
+                    const batchNum = incrementAdBatchWatched();
                     updateUI();
-                    alert(data.message);
+                    if (batchNum >= AD_BATCH_SIZE) {
+                        alert(`🎉 +${15} ETB ተጨምሯል! የ${AD_BATCH_SIZE} ማስታወቂያ ዙር ተጠናቅቋል፣ አዲስ ዙር ተከፍቷል!`);
+                    } else {
+                        alert(data.message);
+                    }
+                    showBonusInterstitial(); // extra ad shown after reward, pays no ETB
                 }
             } catch (error) {
                 alert("ስህተት ተፈጥሯል።");
