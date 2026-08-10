@@ -639,6 +639,114 @@
             margin-right: 5px;
         }
 
+        .bank-grid {
+            display: grid;
+            grid-template-columns: repeat(2,minmax(0,1fr));
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .bank-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 8px;
+            border: 1.5px solid var(--card-border);
+            border-radius: 16px;
+            background: rgba(255,255,255,.03);
+            cursor: pointer;
+            transition: border-color .15s ease, background .15s ease, transform .1s ease;
+            text-align: center;
+        }
+
+        .bank-option:active {
+            transform: scale(.97);
+        }
+
+        .bank-option.selected {
+            border-color: var(--crema);
+            background: rgba(232,181,99,.12);
+            box-shadow: 0 0 0 1px var(--crema);
+        }
+
+        .bank-option-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--espresso);
+            background: linear-gradient(135deg, var(--crema-bright), var(--crema));
+        }
+
+        .bank-option-name {
+            font-size: 12px;
+            font-weight: 700;
+            color: #fdf6ee;
+        }
+
+        .withdraw-progress-wrap {
+            margin: 18px 0 22px;
+        }
+
+        .withdraw-progress-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .withdraw-progress-labels span:last-child {
+            color: var(--crema);
+            font-weight: 700;
+        }
+
+        .withdraw-progress-bar {
+            width: 100%;
+            height: 10px;
+            border-radius: 20px;
+            background: rgba(255,255,255,.06);
+            border: 1px solid var(--card-border);
+            overflow: hidden;
+        }
+
+        .withdraw-progress-fill {
+            height: 100%;
+            width: 0%;
+            border-radius: 20px;
+            background: linear-gradient(90deg, var(--caramel), var(--crema-bright));
+            transition: width .4s ease;
+        }
+
+        .security-note {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-top: 14px;
+            padding: 12px;
+            border: 1px solid var(--card-border);
+            border-radius: 14px;
+            background: rgba(255,255,255,.03);
+            font-size: 11.5px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .security-note svg {
+            width: 20px;
+            height: 20px;
+            flex: 0 0 20px;
+            fill: none;
+            stroke: var(--crema);
+            stroke-width: 1.8;
+            margin-top: 1px;
+        }
+
         @media (max-width:320px) {
             .ads-grid {
                 grid-template-columns: 1fr;
@@ -650,7 +758,7 @@
     <div class="app-shell">
         <div class="header">
             <div class="brand">
-                <img src="https://i.postimg.cc/0QgVXWXK/20260809-234658.jpg" alt="Logo"
+                <img src="YOUR_LOGO_URL_HERE" alt="Logo"
                      onerror="this.src='https://cdn-icons-png.flaticon.com/512/2885/2885560.png'">
                 <span>ቡና Airdrop</span>
             </div>
@@ -712,8 +820,8 @@
 
                 <div class="balance-card" style="padding:18px;">
                     <div class="balance-title">የማውጣት ሁኔታ</div>
-                    <p style="font-size:14px;margin-top:10px;">ዝቅተኛ ሂሳብ: <strong>1,000 ETB</strong></p>
-                    <p style="font-size:14px;margin-top:5px;">ማውጣት ይችላሉ: <strong>1000 ሲሞላ</strong></p>
+                    <p style="font-size:14px;margin-top:10px;">✅ ዝቅተኛ ሂሳብ: <strong>1,000 ETB</strong></p>
+                    <p style="font-size:14px;margin-top:5px;">✅ የሚያስፈልግ ሪፈራል: <strong>15 ሰው</strong></p>
                 </div>
 
                 <div class="withdrawal-stats">
@@ -733,14 +841,20 @@
 
                 <p id="withdrawUpdated" class="muted-text">የመጨረሻ ማዘመኛ: አሁን</p>
 
+                <div class="withdraw-progress-wrap">
+                    <div class="withdraw-progress-labels">
+                        <span>የአሁኑ ሂሳብ</span>
+                        <span id="withdrawProgressPct">0%</span>
+                    </div>
+                    <div class="withdraw-progress-bar">
+                        <div class="withdraw-progress-fill" id="withdrawProgressFill"></div>
+                    </div>
+                    <p class="muted-text" id="withdrawProgressText" style="margin-top:6px;">ወደ ዝቅተኛ ማውጫ ገደብ በመቃረብ ላይ...</p>
+                </div>
+
                 <div class="input-group">
-                    <label>የክፍያ መንገድ</label>
-                    <select class="custom-select" id="payMethod">
-                        <option value="Telebirr">ቴሌብር (Telebirr)</option>
-                        <option value="CBE Birr">ሲቢኢ ብር (CBE Birr)</option>
-                        <option value="Awash Bank">አዋሽ ባንክ (Awash Bank)</option>
-                        <option value="Commercial Bank of Ethiopia">ንግድ ባንክ (CBE Bank)</option>
-                    </select>
+                    <label>የክፍያ ባንክ / ዘዴ ይምረጡ</label>
+                    <div class="bank-grid" id="bankGrid"></div>
                 </div>
 
                 <div class="input-group">
@@ -748,8 +862,19 @@
                     <input type="text" class="custom-input" id="payAccount" placeholder="09... ወይም የባንክ ቁጥር">
                 </div>
 
-                <button class="btn-full" onclick="requestWithdrawal()">ገንዘብ አውጣ</button>
+                <div class="input-group">
+                    <label>የሚወጣ መጠን (ETB)</label>
+                    <input type="text" class="custom-input" id="payAmount" readonly>
+                    <p class="muted-text" style="margin-top:-8px;margin-bottom:14px;">🔒 ሙሉ ሂሳብዎ በአንድ ጊዜ ይወጣል፣ በከፊል ማውጣት አሁን አይቻልም</p>
+                </div>
+
+                <button class="btn-full" id="withdrawSubmitBtn" onclick="requestWithdrawal()">ገንዘብ አውጣ</button>
                 <div id="withdraw-alert" class="alert-success">በሂደት ላይ ነው (Pending)... እባክዎ ይጠብቁ።</div>
+
+                <div class="security-note">
+                    <svg viewBox="0 0 24 24"><path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/></svg>
+                    <span>ሁሉም ክፍያዎች በ24 ሰዓት ውስጥ በአስተዳዳሪ ይረጋገጣሉ እና ደህንነታቸው የተጠበቀ ነው</span>
+                </div>
 
                 <h3 class="comments-title">የተጠቃሚዎች አስተያየት</h3>
                 <div id="withdraw-comments"></div>
@@ -781,15 +906,22 @@
 
         <div class="modal-overlay" id="adModal">
             <h2 style="margin-bottom:20px;">እባክዎ ይጠብቁ...</h2>
-            <div class="timer-circle" id="timerText">15</div>
+            <div class="timer-circle" id="timerText">17</div>
             <p style="color:var(--text-muted);">ማስታወቂያ በመታየት ላይ ነው</p>
+        </div>
+
+        <div class="modal-overlay" id="taskModal">
+            <h2 style="margin-bottom:20px;">ቻናሉን ተቀላቅለዋል?</h2>
+            <div class="timer-circle" id="taskTimerText">30</div>
+            <p style="color:var(--text-muted);">ተቀላቅለው ወደዚህ ይመለሱ፣ ከቆጠራ በኋላ ይከፈልዎታል</p>
         </div>
 
         <div id="loader"><div class="spinner"></div></div>
     </div>
 
     <script>
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbylSsRt7gluxwDTS2QXcq4V5W80h2QCoQ2c8KenScwWTWcKeH3-hgJaBEc3ejKl4Bhj/exec";
+                const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbylSsRt7gluxwDTS2QXcq4V5W80h2QCoQ2c8KenScwWTWcKeH3-hgJaBEc3ejKl4Bhj/exec";
+
         let userId = "";
         let username = "";
         let startParam = "";
@@ -844,10 +976,10 @@
         const paymentMethods = ["Telebirr","CBE Birr","Awash Bank","Commercial Bank of Ethiopia"];
         const timeLabels = ["5 ደቂቃ በፊት","12 ደቂቃ በፊት","1 ሰዓት በፊት","3 ሰዓት በፊት","4 ሰዓት በፊት"];
         const comments = [
-            ["እየሩስ ሀይሌ","ክፍያዬን በፍጥነት ተቀብያለሁ። አመሰግናለሁ!"],
-            ["ዮናስ ጌታቸው","Telebirr ላይ በሰፍጥነት ደርሶኛል።"],
+            ["ሚሚ ሀይሌ","ክፍያዬን በፍጥነት ተቀብያለሁ። አመሰግናለሁ!"],
+            ["ዮናስ ጌታቸው","Telebirr ላይ በሰላም ደርሶኛል።"],
             ["ሊያ ታደሰ","የማውጣት ሂደቱ ቀላል እና ግልጽ ነው።"],
-            ["ሳሙኤል በቀለ","CBE Birr ክፍያዬ ተሸቀብያለሁ።"]
+            ["ሳሙኤል በቀለ","CBE Birr ክፍያዬ ተሳክቷል።"]
         ];
 
         let withdrawalPage = 0;
@@ -913,6 +1045,8 @@
             renderCommentsAndStats();
             renderAdsAndTasks();
             renderSocialFeed();
+            renderBankGrid();
+            updateWithdrawProgress();
 
             setInterval(renderWithdrawalDemo,60000);
             setInterval(renderCommentsAndStats,180000);
@@ -928,12 +1062,67 @@
             renderAdsAndTasks();
         }
 
+        const WITHDRAW_MIN = 100; // must match Code.gs MIN_WITHDRAWAL
+
+        const bankList = [
+            {id:"Telebirr", name:"ቴሌብር", short:"TB"},
+            {id:"CBE Birr", name:"ሲቢኢ ብር", short:"CBE"},
+            {id:"Awash Bank", name:"አዋሽ ባንክ", short:"AW"},
+            {id:"Commercial Bank of Ethiopia", name:"ንግድ ባንክ", short:"CBE"},
+            {id:"Dashen Bank", name:"ዳሸን ባንክ", short:"DB"},
+            {id:"Bank of Abyssinia", name:"አቢሲኒያ ባንክ", short:"BOA"}
+        ];
+
+        let selectedBank = bankList[0].id;
+
+        function renderBankGrid() {
+            const grid = document.getElementById("bankGrid");
+            if (!grid) return;
+            grid.innerHTML = bankList.map(bank => `
+                <div class="bank-option ${bank.id === selectedBank ? 'selected' : ''}" onclick="selectBank('${bank.id}')">
+                    <div class="bank-option-icon">${bank.short}</div>
+                    <div class="bank-option-name">${bank.name}</div>
+                </div>
+            `).join("");
+        }
+
+        function selectBank(bankId) {
+            selectedBank = bankId;
+            renderBankGrid();
+        }
+
+        function updateWithdrawProgress() {
+            const fill = document.getElementById("withdrawProgressFill");
+            const pctLabel = document.getElementById("withdrawProgressPct");
+            const text = document.getElementById("withdrawProgressText");
+            const amountInput = document.getElementById("payAmount");
+            const submitBtn = document.getElementById("withdrawSubmitBtn");
+            if (!fill) return;
+
+            const balance = Number(state.balance || 0);
+            const pct = Math.min(100, Math.round((balance / WITHDRAW_MIN) * 100));
+
+            fill.style.width = pct + "%";
+            pctLabel.innerText = pct + "%";
+            amountInput.value = balance.toLocaleString() + " ETB";
+
+            if (balance >= WITHDRAW_MIN) {
+                text.innerText = "✅ ማውጣት ይችላሉ!";
+                submitBtn.disabled = false;
+            } else {
+                text.innerText = `ገና ${(WITHDRAW_MIN - balance).toLocaleString()} ETB ያስፈልግዎታል`;
+                submitBtn.disabled = true;
+            }
+        }
+
         function updateUI() {
             document.getElementById("homeBalance").innerText =
                 Number(state.balance || 0).toLocaleString();
             document.getElementById("homeRefs").innerText = state.referrals || 0;
             document.getElementById("refCount").innerText = state.referrals || 0;
             renderAdsAndTasks();
+            renderBankGrid();
+            updateWithdrawProgress();
         }
 
         async function fetchData() {
@@ -1111,7 +1300,7 @@
             const timerText = document.getElementById("timerText");
             modal.style.display = "flex";
 
-            let secondsLeft = 15;
+            let secondsLeft = 17;
             timerText.innerText = secondsLeft;
             const countdown = setInterval(() => {
                 secondsLeft -= 1;
@@ -1189,12 +1378,37 @@
             showLoader(false);
         }
 
+        let isTaskCountdownRunning = false;
+
         async function doTask(taskId) {
             if (!userId) return;
+            if (isTaskCountdownRunning) return;
+
             const task = taskList.find(t => t.id === taskId);
             if (task && task.link) {
                 window.open(task.link, "_blank");
             }
+
+            isTaskCountdownRunning = true;
+            const modal = document.getElementById("taskModal");
+            const timerText = document.getElementById("taskTimerText");
+            modal.style.display = "flex";
+
+            let secondsLeft = 30;
+            timerText.innerText = secondsLeft;
+            const countdown = setInterval(() => {
+                secondsLeft -= 1;
+                if (secondsLeft >= 0) timerText.innerText = secondsLeft;
+                if (secondsLeft <= 0) {
+                    clearInterval(countdown);
+                    modal.style.display = "none";
+                    isTaskCountdownRunning = false;
+                    finishTask(taskId);
+                }
+            }, 1000);
+        }
+
+        async function finishTask(taskId) {
             if (!SCRIPT_URL.startsWith("http")) return;
             showLoader(true);
 
@@ -1220,7 +1434,7 @@
 
         async function requestWithdrawal() {
             if (!userId) return;
-            const method = document.getElementById("payMethod").value;
+            const method = selectedBank;
             const account = document.getElementById("payAccount").value.trim();
 
             if (!account) {
